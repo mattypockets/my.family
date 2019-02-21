@@ -76,3 +76,26 @@ router.post('/login', auth.optional, (req, res, next) => {
     })(req,res,next);
 });
 
+// Auth check for protected routes
+// Req includes user obj with username, password, and token in header
+// Res includes user obj with id, username, and token
+// Res only returns if username and password match user in db and token is valid
+
+router.get('/current', auth.required, (req, res, next) => {
+
+    // Get id from req
+    const { payload: { id } } = req;
+
+    // Find user by id
+    return Users.findById(id)
+        .then((user) => {
+            
+            if(!user) {
+                return res.sendStatus(400);
+            }
+
+            return res.json({ user: user.toAuthJSON() });
+        });
+});
+
+module.exports = router;
