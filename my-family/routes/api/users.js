@@ -36,3 +36,43 @@ router.post('/', auth.optional, (req, res, next) => {
     return finalUser.save()
         .then(() => res.json({ user: finalUser.toAuthJSON() }));
 });
+
+// User login
+// Post login route
+// Req includes user obj with username and password
+// Res includes user obj with id, username, and token
+// Res only return if username and password match user in db
+
+router.post('/login', auth.optional, (req, res, next) => {
+    const { body: { user } } = req;
+    if(!user.username) {
+        return res.status(422).json({
+            errors: {
+                username: 'is required',
+            },
+        });
+    }
+    if(!user.password) {
+        return res.status(422).json({
+            errors: {
+                password: 'is required',
+            },
+        });
+    }
+
+    return passposrt.authenticate('local', { session: false }, (err, passportUser, info) => {
+        if(err) {
+            return next(err);
+        }
+
+        if (passportUser) {
+            const user = passportUser;
+            user.token = passportUser.generateJWT();
+
+            return res.json({ user: user.toAuthJSON() });
+        }
+
+        return status(400).info;
+    })(req,res,next);
+});
+
