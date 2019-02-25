@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "crypto": "^1.0.1",
     "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.4.14",
     "passport": "^0.4.0",
     "react": "^16.7.0",
