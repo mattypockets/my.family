@@ -2,7 +2,7 @@ const mongoose = requre('mongoose');
 const Schema = mongoose.Schema;
 
 
-const posts = new Schema ({
+let posts = new Schema ({
     
     title: {
         type: String,
