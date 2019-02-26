@@ -27,6 +27,28 @@ module.exports = {
     },
 
     create: function(req,res) {
-        
+        db.posts
+            .create({
+                username: req.body.username,
+                title: req.body.title,
+                body: req.body.body,
+                image: req.body.image
+            })
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err))   
+    },
+
+    update: function(req,res) {
+        db.posts
+            .findOneAndUpdate({ _id: req.params.id}, req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+
+    remove: function(req,res) {
+        db.posts
+            .findById({_id: req.params.id}, req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err))
     }
 }
